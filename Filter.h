@@ -32,4 +32,10 @@ class Filter
     static int search8(std::vector<BaseballStatistic>, double);
     
     static int search9(std::vector<BaseballStatistic>, double);
+    
+    static void search(std::vector<BaseballStatistic> &, std::vector<BaseballStatistic> &, std::string, std::string);
+    
+    static void search2(std::vector<BaseballStatistic> &, std::string, std::string);
 };
+
+

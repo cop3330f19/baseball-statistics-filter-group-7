@@ -1,7 +1,11 @@
+#include <iostream>
+//initial search function that will create the first list of which the other searches will look at#include <iomanip>
 #include <string>
 #include <vector>
 #include <sstream>
+#include <cstdlib>
 #include "Filter.h"
+#include "StringHelper.h"
 
 using namespace std;
 
@@ -76,238 +80,189 @@ void Filter::sort2(vector<BaseballStatistic>& eList){
     } 
 }
 
-//sort by team name
-int Filter::search1(vector<BaseballStatistic> obj, string team)
-{
-    int lo = 0;
-  int hi = obj.size();
-  
-   while (lo <= hi) 
-    { 
-        int location = lo + (hi-lo)/2; 
-  
-        // Check if name is present at mid
-        if (obj[location].getTeamName() == team) 
-            return location; 
-  
-        // If name greater, ignore left half 
-        if (obj[location].getTeamName() < team) 
-            lo = location + 1; 
-  
-        // If name is smaller, ignore right half 
-        else
-            hi = location - 1; 
-    } 
-  
-    // if we reach here, then element was not present 
-    return -1; 
+//initial search function that will create the first list of which the other searches will look at
+void Filter::search(vector<BaseballStatistic> & temp, vector<BaseballStatistic> & result, string filter, string key){
+   
+    //if there was a confirmed match, set search to true
+    bool search;
+
+    for(int i = 0; i < temp.size(); i++)
+    { //Start of for loop
+       
+        search = false;
+       
+        if(filter == "T")
+        {
+            if(StringHelper::toUpper(temp[i].getTeamName()) == key)   // Team
+            {
+                search = true;
+            }
+        }        
+
+        else if(filter == "P")
+        {
+            if(temp[i].getPosition() == key) // Position
+                search = true;
+        }
+       
+        else if(filter == "B")
+        {
+            if(temp[i].getBatting() == key[0]) //Batting
+                search = true;
+        }
+       
+        else if(filter == "BA")
+        {
+            if(temp[i].getBattingAverage() >= atof(key.c_str())) //Batting Average
+                search = true;
+        }
+       
+        else if(filter == "H")
+        {
+            if(temp[i].getHR() >= atoi(key.c_str())) //Home Runs
+                search = true;
+        }
+       
+        else if(filter == "R")
+        {
+            if(temp[i].getRBI() >= atoi(key.c_str())) //Runs Batted In
+                search = true;
+        }
+       
+        else if(filter == "S")
+        {
+            if(temp[i].getSB() >= atoi(key.c_str())) //Stolen Bases
+                search = true;
+        }
+       
+        else if(filter == "O")
+        {
+            if(temp[i].getOBS() >= atof(key.c_str())) //OPS
+                search = true;
+        }
+       
+        else if(filter == "ERA")
+        {
+            if(temp[i].getERA() >= atof(key.c_str())) //ERA
+                search = true;
+        }
+       // end of if statements
+       // 
+       // 
+        if(search == true) //if serach is true, then add to the result
+        {
+              result.push_back(temp[i]);
+        }
+    } // End of for loop
+   
+    //return result;
+   
 }
 
-int Filter::search2(vector<BaseballStatistic> obj, string pos)
-{
-    int lo = 0;
-  int hi = obj.size();
-  
-   while (lo <= hi) 
-    { 
-        int location = lo + (hi-lo)/2; 
-  
-        // Check if name is present at mid
-        if (obj[location].getPosition() == pos) 
-            return location; 
-  
-        // If name greater, ignore left half 
-        if (obj[location].getPosition() < pos) 
-            lo = location + 1; 
-  
-        // If name is smaller, ignore right half 
-        else
-            hi = location - 1; 
-    } 
-  
-    // if we reach here, then element was not present 
-    return -1; 
-}
+void Filter::search2(vector<BaseballStatistic> & result, string filter, string key){
+   
+    //if there was a confirmed match, set search to true
+    bool search;
 
-int Filter::search3(vector<BaseballStatistic> obj, char bat)
-{
-    int lo = 0;
-  int hi = obj.size();
-  
-   while (lo <= hi) 
-    { 
-        int location = lo + (hi-lo)/2; 
-  
-        // Check if name is present at mid
-        if (obj[location].getBatting() == bat) 
-            return location; 
-  
-        // If name greater, ignore left half 
-        if (obj[location].getBatting() < bat) 
-            lo = location + 1; 
-  
-        // If name is smaller, ignore right half 
-        else
-            hi = location - 1; 
-    } 
-  
-    // if we reach here, then element was not present 
-    return -1; 
-}
+    int og_size = result.size();
+    int i = 0;
+    
+    while(i < result.size())
+    { //Start of for loop
+       
+        search = false;
+       
+        if(filter == "T")
+        {
+            if(StringHelper::toUpper(result[i].getTeamName()) == key)   // Team
+            {
+                search = true;
+                i++;
+            }
+        }        
 
-int Filter::search4(vector<BaseballStatistic> obj, double atBat)
-{
-    int lo = 0;
-  int hi = obj.size();
-  
-   while (lo <= hi) 
-    { 
-        int location = lo + (hi-lo)/2; 
-  
-        // Check if name is present at mid
-        if (obj[location].getBattingAverage() == atBat) 
-            return location; 
-  
-        // If name greater, ignore left half 
-        if (obj[location].getBattingAverage() < atBat) 
-            lo = location + 1; 
-  
-        // If name is smaller, ignore right half 
-        else
-            hi = location - 1; 
-    } 
-  
-    // if we reach here, then element was not present 
-    return -1; 
-}
+        else if(filter == "P")
+        {
+            if(StringHelper::toUpper(result[i].getPosition()) == key) // Position
+            {
+                search = true;
+                i++;
+            }
+        }
+       
+        else if(filter == "B")
+        {
+            if(toupper(result[i].getBatting()) == key[0]) //Batting
+            {
+                search = true;
+                i++;
+            }
+        }
+       
+        else if(filter == "BA")
+        {
+            if(result[i].getBattingAverage() >= atof(key.c_str())) //Batting Average
+            {
+                search = true;
+                i++;
+            }
+        }
+       
+        else if(filter == "H")
+        {
+            if(result[i].getHR() >= atoi(key.c_str())) //Home Runs
+            {
+                search = true;
+                i++;
+            }
+        }
+       
+        else if(filter == "R")
+        {
+            if(result[i].getRBI() >= atoi(key.c_str())) //Runs Batted In
+            {
+                search = true;
+                i++;
+            }
+        }
+       
+        else if(filter == "S")
+        {
+            if(result[i].getSB() >= atoi(key.c_str())) //Stolen Bases
+            {
+                search = true;
+                i++;
+            }
+        }
+       
+        else if(filter == "O")
+        {
+            if(result[i].getOBS() >= atof(key.c_str())) //OPS
+            {
+                search = true;
+                i++;
+            }
+        }
+       
+        else if(filter == "H")
+        {
+            if(result[i].getERA() >= atof(key.c_str())) //ERA
+            {
+                search = true;
+                i++;
+            }
+        }
+       // end of if statements
+       // 
+       // 
+        if(search == false) //if serach is true, then add to the result
+        {
+              result.erase(result.begin() + i);
+            //cout << result.size() << endl;
+        }
 
-int Filter::search5(vector<BaseballStatistic> obj, int hr)
-{
-    int lo = 0;
-  int hi = obj.size();
-  
-   while (lo <= hi) 
-    { 
-        int location = lo + (hi-lo)/2; 
-  
-        // Check if name is present at mid
-        if (obj[location].getHR() == hr) 
-            return location; 
-  
-        // If name greater, ignore left half 
-        if (obj[location].getHR() < hr) 
-            lo = location + 1; 
-  
-        // If name is smaller, ignore right half 
-        else
-            hi = location - 1; 
-    } 
-  
-    // if we reach here, then element was not present 
-    return -1; 
+    } // End of for loop
+   
+    //return result;
+   
 }
-
-int Filter::search6(vector<BaseballStatistic> obj, int rbi)
-{
-    int lo = 0;
-  int hi = obj.size();
-  
-   while (lo <= hi) 
-    { 
-        int location = lo + (hi-lo)/2; 
-  
-        // Check if name is present at mid
-        if (obj[location].getRBI() == rbi) 
-            return location; 
-  
-        // If name greater, ignore left half 
-        if (obj[location].getRBI() < rbi) 
-            lo = location + 1; 
-  
-        // If name is smaller, ignore right half 
-        else
-            hi = location - 1; 
-    } 
-  
-    // if we reach here, then element was not present 
-    return -1; 
-}
-
-int Filter::search7(vector<BaseballStatistic> obj, int sb)
-{
-    int lo = 0;
-  int hi = obj.size();
-  
-   while (lo <= hi) 
-    { 
-        int location = lo + (hi-lo)/2; 
-  
-        // Check if name is present at mid
-        if (obj[location].getSB() == sb) 
-            return location; 
-  
-        // If name greater, ignore left half 
-        if (obj[location].getSB() < sb) 
-            lo = location + 1; 
-  
-        // If name is smaller, ignore right half 
-        else
-            hi = location - 1; 
-    } 
-  
-    // if we reach here, then element was not present 
-    return -1; 
-}
-
-int Filter::search8(vector<BaseballStatistic> obj, double ops)
-{
-    int lo = 0;
-  int hi = obj.size();
-  
-   while (lo <= hi) 
-    { 
-        int location = lo + (hi-lo)/2; 
-  
-        // Check if name is present at mid
-        if (obj[location].getOBS() == ops) 
-            return location; 
-  
-        // If name greater, ignore left half 
-        if (obj[location].getOBS() < ops) 
-            lo = location + 1; 
-  
-        // If name is smaller, ignore right half 
-        else
-            hi = location - 1; 
-    } 
-  
-    // if we reach here, then element was not present 
-    return -1; 
-}
-
-int Filter::search9(vector<BaseballStatistic> obj, double era)
-{
-    int lo = 0;
-  int hi = obj.size();
-  
-   while (lo <= hi) 
-    { 
-        int location = lo + (hi-lo)/2; 
-  
-        // Check if name is present at mid
-        if (obj[location].getERA() == era) 
-            return location; 
-  
-        // If name greater, ignore left half 
-        if (obj[location].getERA() < era) 
-            lo = location + 1; 
-  
-        // If name is smaller, ignore right half 
-        else
-            hi = location - 1; 
-    } 
-  
-    // if we reach here, then element was not present 
-    return -1; 
-}
-

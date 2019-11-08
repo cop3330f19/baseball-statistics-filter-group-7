@@ -14,7 +14,10 @@ class BaseballStatistic
 			teamName,
 			position;
 		
-		int jerseyNum,
+		int year,
+            month, 
+            day,
+            jerseyNum,
 			atBats,
 			hr,
 			rbi,
@@ -30,9 +33,9 @@ class BaseballStatistic
 		Date * dob;
 		
 	public:
-		BaseballStatistic(std::string, std::string, std::string, int,
-			std::string, int, int, int, char, char, int, double, int,
-			int, int, double, double);
+		BaseballStatistic(std::string, int, std::string, std::string, int,
+			int, int, char, char, int, double, int,
+			int, int, double, double, std::string);
 			
 
 		
@@ -49,7 +52,7 @@ class BaseballStatistic
 		void setHR(int);
 		void setRBI(int);
 		void setSB(int);
-		void setOPS(double);
+		void setOBS(double);
 		void setERA(double);
 		
 		
@@ -59,7 +62,6 @@ class BaseballStatistic
 		std::string getTeamName()const;
 		int getJerseyNum()const;
 		std::string getPosition()const;
-		int getAge()const;
 		char getBatting()const;
 		char getThrowing()const;
 		int getAtBats()const;
@@ -67,7 +69,7 @@ class BaseballStatistic
 		int getHR()const;
 		int getRBI()const;
 		int getSB()const;
-		double getOPS()const;
+		double getOBS()const;
 		double getERA()const;
 		
 		//prints a single statistic row to the terminal

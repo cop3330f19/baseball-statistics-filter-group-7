@@ -1,4 +1,3 @@
-
 #include "BaseballStatistic.h"
 #include "StringHelper.h"
 #include "Date.h"
@@ -69,16 +68,6 @@ void BaseballStatistic::setLastName(string lName)
 void BaseballStatistic::setTeamName(string tName)
 {
    teamName = tName;
-}
-
-void BaseballStatistic::setAge(int y, int m, int d)
-{
-    int age = 2019 - year;
-  if(11 < month || 5 < day)
-  {
-    age = age - 1;
-  }
-    
 }
 
 void BaseballStatistic::setJerseyNum(int jNum)
@@ -161,16 +150,6 @@ string BaseballStatistic::getPosition() const
     return position;
 }
 
-int BaseballStatistic::getAge() const
-{
- int age = 2019 - year;
-  if(11 < month || 5 < day)
-  {
-    age = age - 1;
-  }
-    return age;
-}
-
 char BaseballStatistic::getBatting() const
 {
     return batting;
@@ -218,16 +197,13 @@ double BaseballStatistic::getERA() const
 
 void BaseballStatistic::print() const
 {
-    cout << lastName << ", " << firstName << endl;
+    
+    string f_l = lastName + ", " + firstName;
+    
+    cout << left << setw(24) << f_l << setw(5) << dob->getAge() << setw(3) << jerseyNum << setw(12) << teamName << setw(4)
+        << position << batting << "/" << setw(5) << throwing << setw(4) << atBats << setw(6) << battingAverage 
+        << setw(4) << hr << setw(6) << rbi << setw(4) << sb << setw(6) << ops 
+        << era << endl;
     
     
-    
-    
-    
-    
-    
-    
-    
-    cout << "This is what I call a load a bull " << endl;
-    //cout << dob->getDay();
 }
